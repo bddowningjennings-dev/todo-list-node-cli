@@ -6,23 +6,18 @@ const waiting = chalk.blue
 
 const taskMap = {
   add: {
-    function: null,
     cases: [ 'a', 'add' ],
   },
   toggle: {
-    function: null,
     cases: [ 't', 'toggle' ],
   },
   remove: {
-    function: null,
     cases: [ 'r', 'remove' ],
   },
   help: {
-    function: null,
     cases: [ 'h', 'help' ],
   },
   exit: {
-    function: null,
     cases: [ 'e', 'exit' ],
   },
 }
@@ -42,22 +37,18 @@ class TodoList {
   }
   load() {
     const newFilePrompt = answer => {
-      switch(answer) {
-          case 'y':
-          case 'Y':
-          case 'YES':
-          case 'yes':
-            this.saveData()
-            this.askForATask(false)
-            break
-          default:
-            console.log('Exiting...')
-            process.exit(0)
+      const cases = [ 'y', 'Y', 'yes', 'YES' ]
+      if (cases.includes(answer)) {
+        this.saveData()
+        this.askForATask()
+      } else {
+        console.log('Exiting...')
+        process.exit(0)
       }
     }
     try{
       this.todos = JSON.parse(fs.readFileSync('todos.json', 'utf8'))
-      this.askForATask(false)
+      this.askForATask()
     } catch (err){
       if (err.code = 'ENOENT'){
         console.log('Todo file not found. do you want generate a new one? (Y/n)')
